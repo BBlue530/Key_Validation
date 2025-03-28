@@ -9,7 +9,8 @@ phases:
   build:
     commands:
       - echo Packaging the Lambda function...
-      - zip -r lambda.zip AWS_Server.py
+      # PLEASE WORK I BEG YOU
+      - zip -r lambda.zip AWS_Server/AWS_Server.py
 
   post_build:
     commands:
