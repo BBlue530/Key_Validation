@@ -8,7 +8,7 @@ table = dynamodb.Table("Key_Validation")
 def lambda_handler(event, context):
     try:
         body = json.loads(event["body"])
-        license_key = body["LicenseKey:"]
+        license_key = body["LicenseKey"]
     except (KeyError, json.JSONDecodeError):
         return {
             "statusCode": 400,
@@ -16,7 +16,7 @@ def lambda_handler(event, context):
         }
 
     try:
-        response = table.get_item(Key={"LicenseKey:": license_key})
+        response = table.get_item(Key={"LicenseKey": license_key})
         if "Item" not in response:
             return {
                 "statusCode": 400,
