@@ -7,9 +7,9 @@ phases:
       - pip install -r requirements.txt -t .
 
   build:
-    commands:
-      - echo Packaging the Lambda function (only the desired file)...
-      - zip lambda.zip AWS_Server.py
+  commands:
+      - echo Packaging the Lambda function...
+      - zip lambda.zip AWS_Server/AWS_Server.py
 
   post_build:
     commands:
