@@ -1,0 +1,21 @@
+version: 0.2
+
+phases:
+  install:
+    commands:
+      - echo Installing dependencies...
+      - pip install -r requirements.txt -t .
+
+  build:
+    commands:
+      - echo Packaging the Lambda function...
+      - zip -r lambda.zip .
+
+  post_build:
+    commands:
+      - echo Deploying Lambda function...
+      - aws lambda update-function-code --function-name Key_Validation_Lambda --zip-file fileb://lambda.zip
+
+artifacts:
+  files:
+    - lambda.zip

@@ -14,7 +14,7 @@ def lambda_handler(event, context):
             "statusCode": 400,
             "body": json.dumps({"message": "Invalid input"})
         }
-
+ # test
     try:
         response = table.get_item(Key={"LicenseKey": license_key})
         if "Item" not in response:
