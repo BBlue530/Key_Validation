@@ -2,6 +2,8 @@ import json
 from datetime import datetime
 import boto3
 
+# I WILL APPEAR IF EVERYTHING WORKED LIKE IT SHOULD
+
 dynamodb = boto3.resource("dynamodb", region_name="eu-north-1", endpoint_url="https://dynamodb.eu-north-1.amazonaws.com")
 table = dynamodb.Table("Key_Validation")
 
@@ -14,7 +16,6 @@ def lambda_handler(event, context):
             "statusCode": 400,
             "body": json.dumps({"message": "Invalid input"})
         }
- # test
     try:
         response = table.get_item(Key={"LicenseKey": license_key})
         if "Item" not in response:
