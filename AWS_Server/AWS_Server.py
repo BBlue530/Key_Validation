@@ -7,12 +7,12 @@ import boto3
 dynamodb = boto3.resource("dynamodb", region_name="eu-north-1", endpoint_url="https://dynamodb.eu-north-1.amazonaws.com")
 table = dynamodb.Table("Key_Validation")
 
-def lambda_handler(event, context):
-    print(json.dumps(event))
+def check_key(event):
     try:
         body = json.loads(event["body"])
         license_key = body["LicenseKey"]
-    except (KeyError, json.JSONDecodeError):
+    except (KeyError, json.JSONDecodeError) as e:
+        print(f"Error: {str(e)}")
         return {
             "statusCode": 400,
             "body": json.dumps({"message": "Invalid input"})
@@ -44,3 +44,18 @@ def lambda_handler(event, context):
             "statusCode": 500,
             "body": json.dumps({"message": "Internal error", "error": str(e)})
         }
+
+def lambda_handler(event, context):
+    print(json.dumps(event))
+    try:
+        endpoint = event["rawPath"]
+    except KeyError as e:
+        print(f"Error: {str(e)}")
+        return {
+            "statusCode": 400,
+            "body": json.dumps({"message": "Invalid input"})
+        }
+    
+    if endpoint == "/v1/CheckKey":
+        response = check_key(event)
+        return response

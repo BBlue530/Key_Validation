@@ -3,7 +3,7 @@ import json
 
 # PLEASE WORK I BEG OF YOU
 def validate_license(license_key):
-    url = "https://xqj059pfvi.execute-api.eu-north-1.amazonaws.com/V1"
+    url = "https://u1e8fkkqcl.execute-api.eu-north-1.amazonaws.com/v1/CheckKey"
     headers = {"Content-Type": "application/json"}
 
     data = {
