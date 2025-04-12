@@ -52,7 +52,8 @@ def create_key(event):
     expiration_days=30
 
     try:
-        client_name = event["body"]["name"]
+        body = json.loads(event["body"])
+        client_name = body["name"]
     except KeyError as e:
         print(f"Error: {str(e)}")
         return {
