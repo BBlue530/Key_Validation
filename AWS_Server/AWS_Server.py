@@ -8,7 +8,7 @@ dynamodb = boto3.resource("dynamodb", region_name="eu-north-1", endpoint_url="ht
 table = dynamodb.Table("Key_Validation")
 
 def lambda_handler(event, context):
-    json.dumps(event)
+    print(json.dumps(event))
     try:
         body = json.loads(event["body"])
         license_key = body["LicenseKey"]
