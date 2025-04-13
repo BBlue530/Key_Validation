@@ -83,7 +83,7 @@ def create_key(event):
     
 ##################################################################################################################################
 
-def lambda_handler(event):
+def lambda_handler(event, context):
     print(json.dumps(event))
     try:
         endpoint = event["rawPath"]
