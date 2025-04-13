@@ -3,6 +3,8 @@ from datetime import datetime, timedelta
 import boto3
 import uuid
 
+# I WILL APPEAR IF EVERYTHING WORKED LIKE IT SHOULD
+
 dynamodb = boto3.resource("dynamodb", region_name="eu-north-1", endpoint_url="https://dynamodb.eu-north-1.amazonaws.com")
 table = dynamodb.Table("Key_Validation")
 
@@ -49,6 +51,8 @@ def check_key(event):
 ##################################################################################################################################
     
 def create_key(event):
+    dynamodb = boto3.resource("dynamodb", region_name="eu-north-1", endpoint_url="https://dynamodb.eu-north-1.amazonaws.com")
+    table = dynamodb.Table("Key_Validation")
     expiration_days=30
 
     try:
@@ -77,7 +81,7 @@ def create_key(event):
 
     return {
                 "statusCode": 200,
-                "body": json.dumps({"message": f"License Key Generated: {client_name}: {license_key} Expire: {expiration_date}"})
+                "body": json.dumps({"message": f"License Key Generated: {client_name}: {license_key} Expire: {expiration_date})"})
           }
 
 ##################################################################################################################################
