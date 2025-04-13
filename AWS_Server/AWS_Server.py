@@ -108,7 +108,7 @@ def get_secret():
             decoded_binary_secret = get_secret_value_response["SecretBinary"]
             secret = decoded_binary_secret.decode("utf-8")
         
-        return json.loads(secret)["api_key"]
+        return json.loads(secret)["secret_api_key"]
 
     except Exception as e:
         print(f"Error retrieving secret: {str(e)}")
