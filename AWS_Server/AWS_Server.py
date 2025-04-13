@@ -51,35 +51,43 @@ def check_key(event):
 def create_key(event):
     dynamodb = boto3.resource("dynamodb", region_name="eu-north-1", endpoint_url="https://dynamodb.eu-north-1.amazonaws.com")
     table = dynamodb.Table("Key_Validation")
-    expiration_days=30
+    expiration_days = 30
 
     try:
-        client_name = event["body"]["name"]
+        body = json.loads(event["body"])
+        client_name = body["name"]
+
     except KeyError as e:
         print(f"Error: {str(e)}")
         return {
-                "statusCode": 400,
-                "body": json.dumps({"message": "Invalid input"})
-          }
+            "statusCode": 400,
+            "body": json.dumps({"message": "Invalid input"})
+        }
+    except json.JSONDecodeError as e:
+        print(f"Error: {str(e)}")
+        return {
+            "statusCode": 400,
+            "body": json.dumps({"message": "Invalid JSON input"})
+        }
 
     license_key = str(uuid.uuid4())
 
     # Expiration date
     expiration_date = (datetime.now() + timedelta(days=expiration_days)).strftime("%Y-%m-%d")
 
-    # Store key DynamoDB
+    # Store key in DynamoDB
     table.put_item(
-    Item={
-        "LicenseKey": license_key,
-        "ClientName": client_name,
-        "ExpirationDate": expiration_date,
-    }
-)
+        Item={
+            "LicenseKey": license_key,
+            "ClientName": client_name,
+            "ExpirationDate": expiration_date,
+        }
+    )
 
     return {
-                "statusCode": 200,
-                "body": json.dumps({"message": f"License Key Generated: {client_name}: {license_key} Expire: {expiration_date})"})
-          }
+        "statusCode": 200,
+        "body": json.dumps({"message": f"License Key Generated: {client_name}: {license_key} Expire: {expiration_date}"})
+    }
     
 ##################################################################################################################################
 
