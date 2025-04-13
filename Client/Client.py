@@ -1,6 +1,8 @@
 import requests
 import json
 
+##################################################################################################################################
+
 def create_license():
     client_name = input("Enter client name: ")
     api_key = input("Enter API key: ")
@@ -26,6 +28,8 @@ def create_license():
     except Exception as e:
         print(f"Error: {e}")
 
+##################################################################################################################################
+
 def validate_license(license_key):
     url = "https://u1e8fkkqcl.execute-api.eu-north-1.amazonaws.com/v1/CheckKey"
     headers = {"Content-Type": "application/json"}
@@ -45,13 +49,14 @@ def validate_license(license_key):
     except Exception as e:
         print(f"Error: {e}")
 
+##################################################################################################################################
+
 if __name__ == "__main__":
     while True:
         print("1. Check license")
         print("2. Create new license")
-        print("3. Exit")
 
-        choice = input("CLI: ")
+        choice = input("ඞ: ")
 
         if choice == "1":
             license_key = input("Enter license key: ")
@@ -63,3 +68,5 @@ if __name__ == "__main__":
             break
         else:
             print("Invalid choice.")
+
+##################################################################################################################################

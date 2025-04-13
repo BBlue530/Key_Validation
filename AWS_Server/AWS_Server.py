@@ -5,6 +5,7 @@ import uuid
 
 dynamodb = boto3.resource("dynamodb", region_name="eu-north-1", endpoint_url="https://dynamodb.eu-north-1.amazonaws.com")
 table = dynamodb.Table("Key_Validation")
+secrets_client = boto3.client("secretsmanager")
 
 ##################################################################################################################################
 
@@ -88,11 +89,41 @@ def create_key(event):
         "statusCode": 200,
         "body": json.dumps({"message": f"License Key Generated: {client_name}: {license_key} Expire: {expiration_date}"})
     }
+
+##################################################################################################################################
+
+def get_secret():
+    secret_name = "Key_Validation_API_Key"
+    region_name = "eu-north-1"
+
+    try:
+        get_secret_value_response = secrets_client.get_secret_value(SecretId=secret_name)
+        
+        # Check if secret is a string
+        if "SecretString" in get_secret_value_response:
+            secret = get_secret_value_response["SecretString"]
+        else:
+            # Binary secrets
+            decoded_binary_secret = get_secret_value_response["SecretBinary"]
+            secret = decoded_binary_secret.decode("utf-8")
+        
+        return json.loads(secret)["api_key"]
+
+    except Exception as e:
+        print(f"Error retrieving secret: {str(e)}")
+        raise Exception("Error retrieving API key from Secrets Manager")
     
 ##################################################################################################################################
 
 def lambda_handler(event, context):
     print(json.dumps(event))
+    try:
+        secret_api_key = get_secret()
+    except Exception as e:
+        return {
+            "statusCode": 500,
+            "body": json.dumps({"message": "Internal error: Unable to retrieve API key"})
+        }
     try:
         endpoint = event["rawPath"]
     except KeyError as e:
@@ -115,7 +146,7 @@ def lambda_handler(event, context):
             "body": json.dumps({"message": "Invalid input"})
         }
 
-        if api_key == "12345":
+        if api_key == secret_api_key:
             response = create_key(event)
             return response
         else:
