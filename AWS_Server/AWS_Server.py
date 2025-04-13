@@ -98,6 +98,7 @@ def get_secret():
 
     try:
         get_secret_value_response = secrets_client.get_secret_value(SecretId=secret_name)
+        print(f"Secret retrieved: {get_secret_value_response}") # Debug
         
         # Check if secret is a string
         if "SecretString" in get_secret_value_response:
