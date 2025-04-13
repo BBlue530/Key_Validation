@@ -3,8 +3,6 @@ from datetime import datetime, timedelta
 import boto3
 import uuid
 
-# I WILL APPEAR IF EVERYTHING WORKED LIKE IT SHOULD
-
 dynamodb = boto3.resource("dynamodb", region_name="eu-north-1", endpoint_url="https://dynamodb.eu-north-1.amazonaws.com")
 table = dynamodb.Table("Key_Validation")
 
