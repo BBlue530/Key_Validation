@@ -47,15 +47,14 @@ def check_key(event):
         }
     
 ##################################################################################################################################
-    
+
 def create_key(event):
     dynamodb = boto3.resource("dynamodb", region_name="eu-north-1", endpoint_url="https://dynamodb.eu-north-1.amazonaws.com")
     table = dynamodb.Table("Key_Validation")
     expiration_days=30
 
     try:
-        body = json.loads(event["body"])
-        client_name = body["name"]
+        client_name = event["body"]["name"]
     except KeyError as e:
         print(f"Error: {str(e)}")
         return {
@@ -81,7 +80,7 @@ def create_key(event):
                 "statusCode": 200,
                 "body": json.dumps({"message": f"License Key Generated: {client_name}: {license_key} Expire: {expiration_date})"})
           }
-
+    
 ##################################################################################################################################
 
 def lambda_handler(event):
