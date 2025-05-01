@@ -20,7 +20,17 @@ class CreateRequest(BaseModel):
 
 ##################################################################################################################################
 
-@app.post("/v1/CheckKey")
+@app.api_route("/v1/{proxy:path}", methods=["ANY"])
+async def proxy_route(proxy: str, request: Request):
+    if proxy == "CheckKey":
+        return await check_key(request)
+    elif proxy == "CreateKey":
+        return await create_key(request)
+    else:
+        raise HTTPException(status_code=404, detail="Not found")
+
+##################################################################################################################################
+
 def check_key(request: LicenseRequest):
     try:
         response = table.get_item(Key={"LicenseKey": request.LicenseKey})
@@ -40,7 +50,6 @@ def check_key(request: LicenseRequest):
     
 ##################################################################################################################################
 
-@app.post("/v1/CreateKey")
 def create_key(request: CreateRequest, key: str = Header(...)):
     secret_api_key = get_secret()
     if key != secret_api_key:
