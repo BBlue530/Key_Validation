@@ -7,7 +7,7 @@ def create_license():
     client_name = input("Enter client name: ")
     api_key = input("Enter API key: ")
 
-    url = "https://u1e8fkkqcl.execute-api.eu-north-1.amazonaws.com/v1/CreateKey"
+    url = "https://zelftsgvq6.execute-api.eu-north-1.amazonaws.com/dev/v1/CreateKey" # This enpoint will not work only for testing
     headers = {
         "Content-Type": "application/json",
         "key": api_key
@@ -31,7 +31,7 @@ def create_license():
 ##################################################################################################################################
 
 def validate_license(license_key):
-    url = "https://u1e8fkkqcl.execute-api.eu-north-1.amazonaws.com/v1/CheckKey"
+    url = "https://zelftsgvq6.execute-api.eu-north-1.amazonaws.com/dev/v1/CheckKey" # This enpoint will not work only for testing
     headers = {"Content-Type": "application/json"}
 
     data = {
@@ -68,5 +68,3 @@ if __name__ == "__main__":
             break
         else:
             print("Invalid choice.")
-
-##################################################################################################################################
